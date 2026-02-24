@@ -48,19 +48,22 @@ class CalculatorController extends Controller
         }
     }
 
-    public function destroy(int $id): JsonResponse
+    public function destroy(Request $request, int $id): JsonResponse
     {
         $calculation = Calculation::findOrFail($id);
+
+        $this->authorize('delete', $calculation);
+
         $calculation->delete();
 
         return response()->json(['message' => 'Calculation deleted']);
     }
 
-    public function clear(): JsonResponse
+    public function clear(Request $request): JsonResponse
     {
-        Calculation::truncate();
+        Calculation::where('user_id', $request->user()->id)->delete();
 
-        return response()->json(['message' => 'All calculations cleared']);
+        return response()->json(['message' => 'Your calculations have been cleared']);
     }
 
     private function evaluateExpression(string $expression): float|int
