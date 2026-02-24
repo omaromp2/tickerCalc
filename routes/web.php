@@ -10,12 +10,15 @@ Route::get('/', function () {
     ]);
 })->name('home');
 
-Route::get('dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
 
-Route::get('calculator', function () {
-    return Inertia::render('Calculator');
-})->name('calculator');
+    Route::get('calculator', function () {
+        return Inertia::render('Calculator');
+    })->name('calculator');
+});
+
 
 require __DIR__.'/settings.php';
