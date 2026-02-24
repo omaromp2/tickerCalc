@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Calculation;
 use Illuminate\Http\JsonResponse;
+use App\Http\Requests\StoreCalculationRequest;
 use Illuminate\Http\Request;
 
 class CalculatorController extends Controller
@@ -21,12 +22,8 @@ class CalculatorController extends Controller
         return response()->json($calculations);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(StoreCalculationRequest $request): JsonResponse
     {
-        $request->validate([
-            'expression' => 'required|string|max:1000',
-        ]);
-
         $expression = $request->input('expression');
 
         try {
